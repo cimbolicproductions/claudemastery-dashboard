@@ -1,0 +1,1075 @@
+import React from 'react';
+import { useState } from 'react';
+import { 
+  ChevronDown, 
+  ChevronUp, 
+  Moon, 
+  Sun,
+  ExternalLink,
+  Copy,
+  Check,
+  BookOpen,
+  Code,
+  Target,
+  TrendingUp,
+  Search,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Lightbulb,
+  Rocket
+} from 'lucide-react';
+
+const strategies = [
+  {
+    title: "Clear Problem Definition",
+    category: "Foundation",
+    difficulty: "Beginner",
+    timeToMaster: "1-2 hours",
+    successRate: 95,
+    description: "Master the art of defining problems clearly to get precise solutions from Claude Code.",
+    content: "The foundation of effective Claude Code usage starts with crystal-clear problem definition. Include context, constraints, expected outcomes, and success criteria. The more specific you are, the better Claude Code can understand and assist you.",
+    keyPoints: [
+      "Define the exact problem you're solving",
+      "Include technical context and constraints", 
+      "Specify expected outcomes and success criteria",
+      "Provide relevant code snippets or error messages"
+    ],
+    commonMistakes: [
+      "Being too vague about requirements",
+      "Omitting important context",
+      "Not specifying the technology stack"
+    ],
+    code: `# ❌ POOR: Vague request
+claude-code "Fix my login"
+
+# ✅ EXCELLENT: Clear problem definition
+claude-code "Fix authentication issue in my Node.js Express app:
+
+🎯 PROBLEM: Users can't log in - getting 401 errors
+🏗️ CONTEXT: Express.js app with JWT tokens, bcrypt passwords
+⚠️ CONSTRAINTS: Must maintain existing database schema
+📊 EXPECTED: Working login with proper error handling
+🔍 ERROR: 'TypeError: Cannot read property compare of undefined'
+
+Current code:
+[paste relevant login function]
+
+Database schema:
+users: { id, email, password_hash, created_at }
+"`,
+    tags: ["problem-solving", "communication", "best-practices"],
+    relatedStrategies: [1, 2, 7],
+    estimatedReadTime: 3,
+    practiceExercise: {
+      challenge: "Rewrite this vague request as a clear problem definition",
+      badExample: "claude-code 'make my website faster'",
+      solution: "claude-code 'Optimize my React website performance: Current load time is 4.2s, goal is under 2s. Using Next.js 14, hosted on Vercel. Main issues: large bundle size (2.1MB) and slow image loading. Please analyze and optimize.'"
+    }
+  },
+  {
+    title: "Iterative Development",
+    category: "Methodology",
+    difficulty: "Intermediate", 
+    timeToMaster: "2-3 hours",
+    successRate: 88,
+    description: "Build complex solutions step-by-step using iterative development cycles.",
+    content: "Break complex tasks into smaller, manageable steps. Use Claude Code iteratively to build, test, and refine your solution progressively. This approach reduces errors and improves code quality.",
+    keyPoints: [
+      "Start with minimal viable implementation",
+      "Add features incrementally",
+      "Test at each iteration",
+      "Refine based on feedback"
+    ],
+    commonMistakes: [
+      "Trying to build everything at once",
+      "Skipping testing between iterations",
+      "Not documenting changes between versions"
+    ],
+    code: `# 🚀 ITERATIVE DEVELOPMENT WORKFLOW
+
+# 📋 Phase 1: Core Structure
+claude-code "Create a basic React todo app with:
+- Add new todos
+- Mark as complete
+- Delete todos
+- Clean, minimal UI"
+
+# 🔄 Phase 2: Data Persistence  
+claude-code "Add localStorage persistence to my todo app:
+- Save todos to localStorage
+- Load on component mount
+- Handle edge cases (corrupted data, etc.)"
+
+# ✨ Phase 3: Advanced Features
+claude-code "Enhance todo app with:
+- Drag & drop reordering
+- Categories/tags
+- Due dates with notifications
+- Search and filtering"
+
+# 🎨 Phase 4: Polish & Performance
+claude-code "Optimize todo app:
+- Add beautiful animations
+- Implement virtual scrolling for 1000+ items
+- Dark mode toggle
+- Responsive design
+- Accessibility improvements"`,
+    tags: ["methodology", "project-management", "development-process"],
+    relatedStrategies: [0, 6, 9],
+    estimatedReadTime: 4,
+    practiceExercise: {
+      challenge: "Break down building a chat application into 5 iterative phases",
+      solution: "Phase 1: Basic messaging UI, Phase 2: Real-time messaging, Phase 3: User authentication, Phase 4: File sharing, Phase 5: Production deployment"
+    }
+  },
+  {
+    title: "Context Mastery",
+    category: "Communication",
+    difficulty: "Intermediate",
+    timeToMaster: "1-2 hours", 
+    successRate: 92,
+    description: "Provide comprehensive context to get highly accurate and relevant solutions.",
+    content: "Share relevant code, error messages, project structure, and environmental details. Context is king - the more relevant information you provide, the better Claude Code can assist you.",
+    keyPoints: [
+      "Include relevant code snippets",
+      "Share complete error messages and stack traces",
+      "Describe your project structure",
+      "Mention your development environment"
+    ],
+    commonMistakes: [
+      "Only sharing the broken function",
+      "Omitting error stack traces", 
+      "Not mentioning dependencies or versions"
+    ],
+    code: `# 🎯 CONTEXT MASTERY TEMPLATE
+
+claude-code "🚨 DEBUGGING REQUEST
+
+📋 PROBLEM:
+Getting 'Cannot read property map of undefined' in TodoList component
+
+🏗️ PROJECT CONTEXT:
+- React 18.2.0 with TypeScript
+- Using Zustand for state management  
+- Vite build tool
+- Deployed on Netlify
+
+📁 PROJECT STRUCTURE:
+src/
+  components/
+    TodoList.tsx (❌ broken)
+    TodoItem.tsx  
+  store/
+    todoStore.ts
+  types/
+    index.ts
+
+🐛 FULL ERROR:
+TypeError: Cannot read property 'map' of undefined
+  at TodoList.tsx:15:23
+  [full stack trace...]
+
+💾 CURRENT CODE:
+// TodoList.tsx - broken component
+// todoStore.ts - state management
+
+🎯 EXPECTED OUTCOME:
+- Fix the undefined error
+- Ensure robust error handling
+- Maintain TypeScript compatibility"`,
+    tags: ["debugging", "communication", "troubleshooting"],
+    relatedStrategies: [0, 4, 11],
+    estimatedReadTime: 5,
+    practiceExercise: {
+      challenge: "Write a context-rich debugging request for a database connection error",
+      solution: "Include: exact error message, database config, connection code, environment details, network setup, and what you've already tried"
+    }
+  },
+  {
+    title: "Technology Stack Precision",
+    category: "Technical",
+    difficulty: "Beginner",
+    timeToMaster: "1 hour",
+    successRate: 96,
+    description: "Specify your exact technology stack for perfectly compatible solutions.",
+    content: "Always mention your specific technology stack, versions, and dependencies. This ensures you get solutions that work seamlessly with your exact setup without compatibility issues.",
+    keyPoints: [
+      "Specify exact versions of frameworks and libraries",
+      "Mention your runtime environment",
+      "Include relevant dev tools and build setup", 
+      "Note any constraints or requirements"
+    ],
+    commonMistakes: [
+      "Just saying 'React' instead of 'React 18.2'",
+      "Omitting build tools and deployment platforms",
+      "Not mentioning existing dependencies"
+    ],
+    code: `# 🎯 TECHNOLOGY STACK PRECISION
+
+# ❌ VAGUE REQUEST:
+claude-code "Create user authentication with React"
+
+# ✅ PRECISE REQUEST:
+claude-code "Create user authentication system with:
+
+🛠️ CORE STACK:
+- Next.js 14.2.1 (App Router)
+- React 18.2.0
+- TypeScript 5.3.2
+- Node.js 20.10.0
+
+🗄️ DATABASE & AUTH:
+- Prisma 5.8.1 ORM  
+- PostgreSQL 16.1
+- NextAuth.js 4.24.5
+- bcryptjs 2.4.3
+
+🎨 STYLING & UI:
+- Tailwind CSS 3.4.1
+- shadcn/ui components
+- Framer Motion 11.0.3
+
+🔧 TOOLS & DEPLOYMENT:
+- pnpm package manager
+- Vercel deployment
+- Docker containerization
+- GitHub Actions CI/CD"`,
+    tags: ["technical-specification", "compatibility", "best-practices"],
+    relatedStrategies: [0, 2, 10],
+    estimatedReadTime: 3,
+    practiceExercise: {
+      challenge: "Write a precise tech stack specification for a mobile app project",
+      solution: "Include: React Native version, navigation library, state management, backend API, database, push notifications, deployment platforms, and device requirements"
+    }
+  },
+  {
+    title: "Advanced Error Debugging",
+    category: "Debugging",
+    difficulty: "Advanced",
+    timeToMaster: "3-4 hours",
+    successRate: 85,
+    description: "Master systematic debugging techniques for complex issues.",
+    content: "When encountering errors, provide comprehensive debugging information including full error messages, stack traces, reproduction steps, and environmental context. Learn to debug systematically.",
+    keyPoints: [
+      "Include complete error messages and stack traces",
+      "Provide steps to reproduce the issue",
+      "Share relevant configuration files",
+      "Mention what you've already tried"
+    ],
+    commonMistakes: [
+      "Only sharing the error message without stack trace",
+      "Not providing reproduction steps",
+      "Omitting what debugging steps were already attempted"
+    ],
+    code: `# 🔍 ADVANCED ERROR DEBUGGING FRAMEWORK
+
+claude-code "🚨 CRITICAL BUG ANALYSIS NEEDED
+
+📊 ISSUE SUMMARY:
+Production deployment failing with memory leak in Docker container
+Memory usage grows from 150MB to 2GB+ over 6 hours
+Causing OOMKilled errors and service restarts
+
+🔄 REPRODUCTION STEPS:
+1. Deploy to production (Kubernetes cluster)
+2. Handle ~100 concurrent users
+3. Memory steadily increases over time
+4. Container killed after 6-8 hours
+
+📈 METRICS & MONITORING:
+- Memory baseline: 150MB
+- Memory after 1 hour: 400MB  
+- Memory after 3 hours: 1.2GB
+- Memory after 6 hours: 2GB+ → OOMKilled
+- CPU usage remains stable ~15%
+
+🛠️ ENVIRONMENT:
+- Node.js 20.10.0 (Alpine Linux)
+- Express.js 4.18.2
+- PostgreSQL connection pool (pg 8.11.3)
+- Redis for sessions (ioredis 5.3.2)
+- Docker multi-stage build
+- Kubernetes 1.28
+
+📋 DEBUGGING ATTEMPTS:
+✅ Checked for unclosed database connections
+✅ Verified Redis connection cleanup
+✅ Reviewed event listener cleanup
+❌ Still unable to identify root cause"`,
+    tags: ["debugging", "performance", "production-issues", "troubleshooting"],
+    relatedStrategies: [2, 7, 11],
+    estimatedReadTime: 6,
+    practiceExercise: {
+      challenge: "Create a debugging template for a performance issue in a React app",
+      solution: "Include performance metrics, profiler results, component render counts, bundle analysis, and systematic elimination steps"
+    }
+  },
+  {
+    title: "Code Review Mastery", 
+    category: "Quality",
+    difficulty: "Advanced",
+    timeToMaster: "4-5 hours",
+    successRate: 89,
+    description: "Get comprehensive code reviews that improve quality, performance, and maintainability.",
+    content: "Request thorough code reviews covering performance, security, maintainability, and best practices. Learn to ask for specific types of feedback to improve different aspects of your code.",
+    keyPoints: [
+      "Specify what aspects to focus on",
+      "Request specific improvement suggestions",
+      "Ask for alternative implementations",
+      "Get feedback on architecture decisions"
+    ],
+    commonMistakes: [
+      "Asking for generic 'review my code'",
+      "Not specifying areas of concern",
+      "Ignoring architectural feedback"
+    ],
+    code: `# 🔍 COMPREHENSIVE CODE REVIEW REQUEST
+
+claude-code "🎯 EXPERT CODE REVIEW NEEDED
+
+📋 COMPONENT: User Dashboard with Real-time Updates
+⏱️ TIMELINE: Pre-production review (deploying in 2 days)
+👥 USERS: ~10K daily active users expected
+
+🎯 REVIEW FOCUS AREAS:
+
+🚀 PERFORMANCE:
+- Bundle size optimization
+- Unnecessary re-renders
+- Memory leak potential
+- Loading state management
+
+🔒 SECURITY:
+- XSS vulnerabilities
+- Data validation
+- WebSocket security
+- API endpoint safety
+
+🏗️ ARCHITECTURE:
+- Component composition
+- State management patterns
+- Error boundary usage
+- Testability
+
+🎯 SPECIFIC QUESTIONS:
+1. Is the WebSocket connection handled optimally?
+2. Should I use a data fetching library like TanStack Query?
+3. How can I improve error handling?
+4. Are there any obvious performance bottlenecks?"`,
+    tags: ["code-review", "quality-assurance", "best-practices", "architecture"],
+    relatedStrategies: [7, 11, 8],
+    estimatedReadTime: 7,
+    practiceExercise: {
+      challenge: "Write a code review request focusing on security vulnerabilities in an API endpoint",
+      solution: "Include authentication logic, input validation, database queries, error handling, and rate limiting code with specific security concerns"
+    }
+  },
+  {
+    title: "Testing Strategy Excellence",
+    category: "Quality", 
+    difficulty: "Advanced",
+    timeToMaster: "5-6 hours",
+    successRate: 82,
+    description: "Create comprehensive testing strategies that catch bugs before production.",
+    content: "Develop robust testing approaches including unit tests, integration tests, and end-to-end tests. Learn to identify what to test, how to structure tests, and how to achieve meaningful coverage.",
+    keyPoints: [
+      "Design comprehensive test suites",
+      "Test edge cases and error scenarios",
+      "Mock external dependencies effectively",
+      "Achieve meaningful test coverage"
+    ],
+    commonMistakes: [
+      "Only testing happy path scenarios",
+      "Poor mocking strategies",
+      "Testing implementation details instead of behavior"
+    ],
+    code: `# 🧪 COMPREHENSIVE TESTING SUITE
+
+claude-code "🎯 COMPLETE TESTING SUITE NEEDED
+
+📋 COMPONENT: E-commerce Checkout Flow
+⚡ COMPLEXITY: High (payment processing, inventory, user auth)
+🎯 GOAL: 95%+ test coverage with meaningful tests
+
+🧪 TESTING REQUIREMENTS:
+
+📊 UNIT TESTS (Jest + Testing Library):
+✅ Test each method in isolation
+✅ Mock all external dependencies
+✅ Cover edge cases and error scenarios
+✅ Test input validation
+
+🔗 INTEGRATION TESTS:
+✅ Test service interactions
+✅ Database operations
+✅ API endpoint testing
+✅ Payment gateway integration
+
+🌐 END-TO-END TESTS (Playwright):
+✅ Complete checkout flow
+✅ Payment success/failure scenarios  
+✅ Inventory updates
+✅ Cross-browser compatibility
+
+🎯 SPECIFIC TEST SCENARIOS:
+- Successful payment processing
+- Declined card scenarios
+- Out of stock scenarios
+- Security testing (XSS, CSRF)
+- Performance under load"`,
+    tags: ["testing", "quality-assurance", "automation", "best-practices"],
+    relatedStrategies: [5, 7, 10],
+    estimatedReadTime: 8,
+    practiceExercise: {
+      challenge: "Design a testing strategy for a real-time chat application",
+      solution: "Include unit tests for message handling, integration tests for WebSocket connections, E2E tests for user flows, and performance tests for concurrent users"
+    }
+  },
+  {
+    title: "Performance Optimization",
+    category: "Performance",
+    difficulty: "Expert",
+    timeToMaster: "6-8 hours", 
+    successRate: 78,
+    description: "Master advanced performance optimization techniques for web applications.",
+    content: "Learn systematic approaches to identify, measure, and fix performance bottlenecks. Cover everything from bundle optimization to runtime performance improvements.",
+    keyPoints: [
+      "Profile and measure before optimizing",
+      "Focus on user-perceived performance metrics",
+      "Optimize critical rendering path",
+      "Implement effective caching strategies"
+    ],
+    commonMistakes: [
+      "Optimizing without measuring",
+      "Focusing on vanity metrics instead of user experience",
+      "Over-optimizing non-critical paths"
+    ],
+    code: `# ⚡ PERFORMANCE OPTIMIZATION MASTER CLASS
+
+claude-code "🎯 URGENT PERFORMANCE OPTIMIZATION
+
+📊 CURRENT PERFORMANCE METRICS:
+- Largest Contentful Paint (LCP): 4.8s (❌ Poor)
+- First Input Delay (FID): 180ms (❌ Needs work) 
+- Cumulative Layout Shift (CLS): 0.25 (❌ Poor)
+- Time to Interactive (TTI): 6.2s (❌ Poor)
+- Bundle Size: 2.1MB gzipped (❌ Too large)
+
+🎯 TARGET METRICS:
+- LCP: < 2.5s
+- FID: < 100ms
+- CLS: < 0.1
+- TTI: < 3.5s
+- Bundle Size: < 500KB gzipped
+
+🔍 PERFORMANCE ANALYSIS NEEDED:
+
+📦 BUNDLE OPTIMIZATION:
+- Tree shaking effectiveness
+- Code splitting opportunities  
+- Dynamic imports strategy
+- Vendor chunk optimization
+
+⚡ RUNTIME OPTIMIZATION:
+- React rendering optimization
+- Expensive calculation memoization
+- Virtual scrolling implementation
+- Web Workers for heavy tasks
+
+🗄️ DATA FETCHING:
+- GraphQL query optimization
+- Caching strategy (SWR/TanStack Query)
+- Request batching
+- Prefetching strategies"`,
+    tags: ["performance", "optimization", "web-vitals", "bundle-analysis"],
+    relatedStrategies: [5, 9, 11],
+    estimatedReadTime: 10,
+    practiceExercise: {
+      challenge: "Create a performance optimization plan for a data-heavy dashboard",
+      solution: "Include bundle analysis, render optimization, data virtualization, caching strategies, and Core Web Vitals improvements"
+    }
+  },
+  {
+    title: "API Integration Excellence",
+    category: "Integration", 
+    difficulty: "Intermediate",
+    timeToMaster: "3-4 hours",
+    successRate: 87,
+    description: "Master API integration patterns with robust error handling and optimal performance.",
+    content: "Learn to integrate with APIs effectively, handling authentication, rate limiting, error scenarios, and data transformation. Build resilient integrations that work reliably in production.",
+    keyPoints: [
+      "Implement robust error handling and retries",
+      "Handle authentication and rate limiting",
+      "Design efficient data transformation",
+      "Add comprehensive logging and monitoring"
+    ],
+    commonMistakes: [
+      "Not handling rate limiting",
+      "Poor error handling and user feedback",
+      "Inefficient data transformation"
+    ],
+    code: `# 🔗 API INTEGRATION EXCELLENCE
+
+claude-code "🎯 PRODUCTION-READY API INTEGRATION
+
+📋 INTEGRATION TARGET: Stripe Payment API + Webhooks
+⚡ COMPLEXITY: High (payments, webhooks, error handling)
+🎯 REQUIREMENTS: PCI compliant, 99.9% uptime, global scale
+
+💳 STRIPE API INTEGRATION:
+- Payment Intent creation
+- 3D Secure authentication
+- Multi-currency support (USD, EUR, GBP, JPY)
+- Subscription billing
+- Refund processing
+
+🔔 WEBHOOK PROCESSING:
+- Signature verification
+- Idempotency handling
+- Event replay capability
+- Dead letter queue
+
+🎯 SPECIFIC IMPLEMENTATION NEEDS:
+
+🔐 SECURITY & COMPLIANCE:
+- Webhook signature verification
+- PCI DSS compliance patterns
+- Sensitive data handling
+- API key management
+
+⚡ PERFORMANCE & RELIABILITY:
+- Connection pooling
+- Request timeout handling
+- Circuit breaker pattern
+- Rate limit handling
+
+🚨 ERROR HANDLING:
+- Network failure recovery
+- API error classification
+- User-friendly error messages
+- Monitoring and alerting"`,
+    tags: ["api-integration", "payments", "webhooks", "error-handling"],
+    relatedStrategies: [2, 4, 11],
+    estimatedReadTime: 8,
+    practiceExercise: {
+      challenge: "Design an API integration for a third-party service with rate limiting",
+      solution: "Include retry logic with exponential backoff, circuit breaker pattern, request queuing, and graceful degradation strategies"
+    }
+  }
+];
+
+export default function ClaudeCodeDashboard() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [expandedCards, setExpandedCards] = useState({});
+  const [copiedCode, setCopiedCode] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [completedStrategies, setCompletedStrategies] = useState(new Set());
+
+  const categories = ["All", "Foundation", "Methodology", "Communication", "Technical", "Debugging", "Quality", "Performance", "Integration"];
+
+  const filteredStrategies = strategies.filter(strategy => {
+    const matchesCategory = selectedCategory === "All" || strategy.category === selectedCategory;
+    const matchesSearch = strategy.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         strategy.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         strategy.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
+  const toggleColorMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const toggleCard = (index) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
+  const handleCopy = async (code, index) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedCode(prev => ({ ...prev, [index]: true }));
+      setTimeout(() => {
+        setCopiedCode(prev => ({ ...prev, [index]: false }));
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
+  const markAsCompleted = (index) => {
+    setCompletedStrategies(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
+  const getDifficultyColor = (difficulty) => {
+    const colors = {
+      'Beginner': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+      'Intermediate': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+      'Advanced': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+      'Expert': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+    };
+    return colors[difficulty] || colors['Beginner'];
+  };
+
+  const baseClasses = darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900';
+  const cardClasses = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200';
+  const headerClasses = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200';
+  const sidebarClasses = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200';
+
+  return (
+    <div className={`min-h-screen ${baseClasses} transition-colors duration-200`}>
+      {/* Header */}
+      <header className={`${headerClasses} border-b px-6 py-4 shadow-sm`}>
+        <div className="flex items-center justify-between max-w-7xl mx-auto">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <Rocket className="text-white" size={16} />
+            </div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Claude Code Mastery
+            </h1>
+          </div>
+          <button
+            onClick={toggleColorMode}
+            className={`p-2 rounded-lg transition-colors ${
+              darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+            }`}
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        </div>
+      </header>
+
+      <div className="flex">
+        {/* Enhanced Sidebar */}
+        <nav className={`${sidebarClasses} w-80 h-[calc(100vh-73px)] border-r overflow-y-auto`}>
+          {/* Search and Filters */}
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="relative mb-4">
+              <Search size={16} className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search strategies..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={`w-full pl-10 pr-4 py-2 rounded-lg border ${
+                  darkMode 
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              />
+            </div>
+            
+            <div className="space-y-1">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                    selectedCategory === category
+                      ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                      : darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Progress Tracking */}
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-gray-600 dark:text-gray-400">
+              Progress
+            </h3>
+            <div className="flex items-center space-x-2 mb-2">
+              <div className={`h-2 flex-1 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
+                <div 
+                  className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-500"
+                  style={{ width: `${(completedStrategies.size / strategies.length) * 100}%` }}
+                />
+              </div>
+              <span className="text-sm font-medium">
+                {completedStrategies.size}/{strategies.length}
+              </span>
+            </div>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              Strategies completed
+            </p>
+          </div>
+
+          {/* Strategy List */}
+          <div className="p-6">
+            <h3 className="font-semibold mb-4 text-sm uppercase tracking-wide text-gray-600 dark:text-gray-400">
+              Strategies ({filteredStrategies.length})
+            </h3>
+            <div className="space-y-2">
+              {filteredStrategies.map((strategy, index) => {
+                const originalIndex = strategies.findIndex(s => s.title === strategy.title);
+                const isCompleted = completedStrategies.has(originalIndex);
+                
+                return (
+                  <div
+                    key={index}
+                    className={`p-3 rounded-lg border transition-colors cursor-pointer ${
+                      isCompleted
+                        ? 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-700'
+                        : darkMode ? 'bg-gray-700 border-gray-600 hover:bg-gray-600' : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                    }`}
+                    onClick={() => {
+                      const element = document.getElementById(strategy.title.replace(/\s/g, '-'));
+                      element?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <h4 className="font-medium text-sm">{strategy.title}</h4>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          markAsCompleted(originalIndex);
+                        }}
+                        className={`transition-colors ${
+                          isCompleted
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-gray-400 hover:text-green-600'
+                        }`}
+                      >
+                        <CheckCircle size={16} />
+                      </button>
+                    </div>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${getDifficultyColor(strategy.difficulty)}`}>
+                        {strategy.difficulty}
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {strategy.timeToMaster}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3 text-xs text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center space-x-1">
+                        <TrendingUp size={12} />
+                        <span>{strategy.successRate}%</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Clock size={12} />
+                        <span>{strategy.estimatedReadTime}min</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </nav>
+
+        {/* Main Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold mb-4">Master Claude Code</h2>
+              <p className={`text-lg mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                Transform your development workflow with these battle-tested strategies. Each strategy includes practical examples, 
+                common pitfalls, and hands-on exercises to accelerate your mastery.
+              </p>
+              
+              {/* Stats Dashboard */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div className={`${cardClasses} border rounded-xl p-4`}>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                      <BookOpen size={20} className="text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">{strategies.length}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Total Strategies</p>
+                    </div>
+                  </div>
+                </div>
+                <div className={`${cardClasses} border rounded-xl p-4`}>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+                      <CheckCircle size={20} className="text-green-600 dark:text-green-400" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">{completedStrategies.size}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Completed</p>
+                    </div>
+                  </div>
+                </div>
+                <div className={`${cardClasses} border rounded-xl p-4`}>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
+                      <TrendingUp size={20} className="text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">
+                        {Math.round(strategies.reduce((acc, s) => acc + s.successRate, 0) / strategies.length)}%
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Avg Success Rate</p>
+                    </div>
+                  </div>
+                </div>
+                <div className={`${cardClasses} border rounded-xl p-4`}>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-orange-100 dark:bg-orange-900 rounded-lg">
+                      <Clock size={20} className="text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">
+                        {strategies.reduce((acc, s) => acc + s.estimatedReadTime, 0)}min
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Total Read Time</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Strategy Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {filteredStrategies.map((strategy, index) => {
+                const originalIndex = strategies.findIndex(s => s.title === strategy.title);
+                const isCompleted = completedStrategies.has(originalIndex);
+                
+                return (
+                  <div
+                    key={index}
+                    id={strategy.title.replace(/\s/g, '-')}
+                    className={`${cardClasses} border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden ${
+                      isCompleted ? 'ring-2 ring-green-200 dark:ring-green-700' : ''
+                    }`}
+                    style={{
+                      animation: `fadeIn 0.6s ease-out ${index * 0.1}s both`
+                    }}
+                  >
+                    {/* Card Header */}
+                    <div className="p-6 pb-4">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <h3 className="text-xl font-semibold">{strategy.title}</h3>
+                            {isCompleted && (
+                              <CheckCircle size={20} className="text-green-500" />
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                            {strategy.description}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => markAsCompleted(originalIndex)}
+                          className={`p-2 rounded-lg transition-colors ${
+                            isCompleted
+                              ? 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400'
+                              : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400'
+                          }`}
+                        >
+                          <CheckCircle size={20} />
+                        </button>
+                      </div>
+
+                      {/* Metadata */}
+                      <div className="flex items-center space-x-4 mb-4 text-sm">
+                        <span className={`px-2 py-1 rounded ${getDifficultyColor(strategy.difficulty)}`}>
+                          {strategy.difficulty}
+                        </span>
+                        <div className="flex items-center space-x-1 text-gray-600 dark:text-gray-400">
+                          <Clock size={14} />
+                          <span>{strategy.timeToMaster}</span>
+                        </div>
+                        <div className="flex items-center space-x-1 text-gray-600 dark:text-gray-400">
+                          <TrendingUp size={14} />
+                          <span>{strategy.successRate}% success</span>
+                        </div>
+                        <div className="flex items-center space-x-1 text-gray-600 dark:text-gray-400">
+                          <BookOpen size={14} />
+                          <span>{strategy.estimatedReadTime}min read</span>
+                        </div>
+                      </div>
+
+                      <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} leading-relaxed mb-4`}>
+                        {strategy.content}
+                      </p>
+
+                      {/* Key Points */}
+                      {strategy.keyPoints && (
+                        <div className="mb-4">
+                          <h4 className="font-medium mb-2 flex items-center space-x-2">
+                            <Target size={16} />
+                            <span>Key Points</span>
+                          </h4>
+                          <ul className="space-y-1 text-sm">
+                            {strategy.keyPoints.map((point, idx) => (
+                              <li key={idx} className="flex items-start space-x-2">
+                                <div className="w-1 h-1 rounded-full bg-blue-500 mt-2 flex-shrink-0" />
+                                <span className={darkMode ? 'text-gray-300' : 'text-gray-600'}>{point}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Common Mistakes */}
+                      {strategy.commonMistakes && (
+                        <div className="mb-4">
+                          <h4 className="font-medium mb-2 flex items-center space-x-2">
+                            <AlertCircle size={16} />
+                            <span>Common Mistakes</span>
+                          </h4>
+                          <ul className="space-y-1 text-sm">
+                            {strategy.commonMistakes.map((mistake, idx) => (
+                              <li key={idx} className="flex items-start space-x-2">
+                                <div className="w-1 h-1 rounded-full bg-red-500 mt-2 flex-shrink-0" />
+                                <span className={darkMode ? 'text-gray-300' : 'text-gray-600'}>{mistake}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Code Example Toggle */}
+                    <div className="px-6 pb-6">
+                      <button
+                        onClick={() => toggleCard(originalIndex)}
+                        className={`w-full flex items-center justify-between p-3 rounded-lg border transition-colors ${
+                          darkMode 
+                            ? 'border-gray-600 hover:bg-gray-700' 
+                            : 'border-gray-200 hover:bg-gray-50'
+                        }`}
+                      >
+                        <span className="font-medium text-sm flex items-center space-x-2">
+                          <Code size={16} />
+                          <span>View Code Example</span>
+                        </span>
+                        {expandedCards[originalIndex] ? (
+                          <ChevronUp size={16} />
+                        ) : (
+                          <ChevronDown size={16} />
+                        )}
+                      </button>
+
+                      {/* Code Example Panel */}
+                      {expandedCards[originalIndex] && (
+                        <div className={`mt-4 rounded-lg border overflow-hidden ${
+                          darkMode ? 'border-gray-600' : 'border-gray-200'
+                        }`}>
+                          <div className={`flex items-center justify-between p-3 border-b ${
+                            darkMode 
+                              ? 'bg-gray-800 border-gray-600' 
+                              : 'bg-gray-50 border-gray-200'
+                          }`}>
+                            <span className="text-sm font-medium">Code Example</span>
+                            <button
+                              onClick={() => handleCopy(strategy.code, originalIndex)}
+                              className={`flex items-center space-x-1 px-3 py-1 rounded text-xs transition-colors ${
+                                copiedCode[originalIndex]
+                                  ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                                  : darkMode
+                                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                    : 'bg-white text-gray-600 hover:bg-gray-100'
+                              }`}
+                            >
+                              {copiedCode[originalIndex] ? (
+                                <>
+                                  <Check size={12} />
+                                  <span>Copied!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy size={12} />
+                                  <span>Copy</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                          <pre className={`p-4 text-xs overflow-x-auto ${
+                            darkMode ? 'bg-gray-900' : 'bg-white'
+                          }`}>
+                            <code className={`${darkMode ? 'text-gray-300' : 'text-gray-800'}`}>
+                              {strategy.code}
+                            </code>
+                          </pre>
+                        </div>
+                      )}
+
+                      {/* Practice Exercise */}
+                      {strategy.practiceExercise && expandedCards[originalIndex] && (
+                        <div className={`mt-4 p-4 rounded-lg border ${
+                          darkMode ? 'bg-gray-700 border-gray-600' : 'bg-blue-50 border-blue-200'
+                        }`}>
+                          <h4 className="font-medium mb-2 flex items-center space-x-2">
+                            <Lightbulb size={16} />
+                            <span>Practice Exercise</span>
+                          </h4>
+                          <p className="text-sm mb-3">{strategy.practiceExercise.challenge}</p>
+                          {strategy.practiceExercise.badExample && (
+                            <div className="mb-3">
+                              <p className="text-xs font-medium mb-1 text-red-600 dark:text-red-400">❌ Bad Example:</p>
+                              <code className="text-xs bg-red-100 dark:bg-red-900 px-2 py-1 rounded">
+                                {strategy.practiceExercise.badExample}
+                              </code>
+                            </div>
+                          )}
+                          <div>
+                            <p className="text-xs font-medium mb-1 text-green-600 dark:text-green-400">✅ Solution:</p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                              {strategy.practiceExercise.solution}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Footer */}
+            <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="text-center">
+                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-2`}>
+                  Based on Cole Medin's Video - Enhanced with Advanced Features
+                </p>
+                <a
+                  href="https://www.youtube.com/watch?v=amEUIuBKwvg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-1 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                >
+                  <span>Watch on YouTube</span>
+                  <ExternalLink size={16} />
+                </a>
+              </div>
+            </footer>
+          </div>
+        </main>
+      </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
